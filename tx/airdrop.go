@@ -12,7 +12,7 @@ func BuildTransaction(walletAddr string, holders []db.Holder, adaPerNFT int64) e
 	txOuts := []string{}
 	for _, h := range holders {
 		total := adaPerNFT * h.Count
-		slog.Default().Debug("Calculating transaction output",
+		slog.Default().Info("Calculating transaction output",
 			"holder_address", h.Address,
 			"nft_count", h.Count,
 			"ada_per_nft", adaPerNFT,
@@ -36,7 +36,7 @@ func BuildTransaction(walletAddr string, holders []db.Holder, adaPerNFT int64) e
 		"--out-file", "airdrop-tx.raw",
 	}, txOuts...)
 
-	slog.Default().Debug("Executing cardano-cli command", "args", args)
+	slog.Default().Info("Executing cardano-cli command", "args", args)
 
 	cmd := exec.Command("cardano-cli", args...)
 	cmd.Stdout = nil
