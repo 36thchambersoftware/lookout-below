@@ -11,10 +11,10 @@ import (
 func BuildTransaction(walletAddr string, holders []db.Holder, adaPerNFT int64) error {
 	txOuts := []string{}
 	for _, h := range holders {
-		total := adaPerNFT * h.Count
+		total := adaPerNFT * h.Quantity
 		slog.Default().Info("Calculating transaction output",
 			"holder_address", h.Address,
-			"nft_count", h.Count,
+			"nft_count", h.Quantity,
 			"ada_per_nft", adaPerNFT,
 			"total_ada", total,
 		)

@@ -62,7 +62,7 @@ func main() {
 		"holders_count", len(holders),
 	)
 	for _, h := range holders {
-		totalNeeded += h.Count * adaPerNFT
+		totalNeeded += h.Quantity * adaPerNFT
 	}
 
 	if err := wallet.CheckFunds(walletAddr, int64(totalNeeded*1e6)); err != nil {

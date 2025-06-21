@@ -6,8 +6,8 @@ import (
 )
 
 type Holder struct {
-	Address string
-	Count   int64
+	Address  string `json:"address"`
+    Quantity int64  `json:"quantity"`
 }
 
 func GetHolders(db *sql.DB, policyID string) ([]Holder, error) {
@@ -32,7 +32,7 @@ func GetHolders(db *sql.DB, policyID string) ([]Holder, error) {
 	var holders []Holder
 	for rows.Next() {
 		var h Holder
-		if err := rows.Scan(&h.Address, &h.Count); err != nil {
+		if err := rows.Scan(&h.Address, &h.Quantity); err != nil {
 			return nil, err
 		}
 		holders = append(holders, h)
