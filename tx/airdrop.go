@@ -8,10 +8,10 @@ import (
 	"github.com/36thchambersoftware/lookout-below/db"
 )
 
-func BuildTransaction(walletAddr string, holders []db.Holder, adaPerNFT float64) error {
+func BuildTransaction(walletAddr string, holders []db.Holder, adaPerNFT int64) error {
 	txOuts := []string{}
 	for _, h := range holders {
-		total := adaPerNFT * float64(h.Count)
+		total := adaPerNFT * h.Count
 		txOuts = append(txOuts, fmt.Sprintf("--tx-out %s+%d", h.Address, int(total*1e6)))
 	}
 

@@ -50,15 +50,15 @@ func main() {
 	addrBytes, _ := os.ReadFile(walletAddrFile)
 	walletAddr := string(addrBytes)
 
-	totalNeeded := 0.0
-	adaPerNFT, _ := strconv.ParseFloat(config.GetEnv("AIR_DROP_AMOUNT"), 64)
+	var totalNeeded int64
+	adaPerNFT, _ := strconv.ParseInt(config.GetEnv("AIR_DROP_AMOUNT"), 10, 64)
 	slog.Default().Info("Airdrop configuration",
 		"wallet_address", walletAddr,
 		"ada_per_nft", adaPerNFT,
 		"holders_count", len(holders),
 	)
 	for _, h := range holders {
-		totalNeeded += float64(h.Count) * adaPerNFT
+		totalNeeded += h.Count * adaPerNFT
 	}
 
 	if err := wallet.CheckFunds(walletAddr, int64(totalNeeded*1e6)); err != nil {
