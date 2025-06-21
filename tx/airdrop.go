@@ -23,11 +23,14 @@ func BuildTransaction(walletAddr string, holders []db.Holder, adaPerNFT int64) e
 	)
 
 	args := append([]string{
+		"conway",
 		"transaction", "build",
-		"--alonzo-era", "--mainnet",
+		"--mainnet",
 		"--change-address", walletAddr,
 		"--out-file", "airdrop-tx.raw",
 	}, txOuts...)
+
+	slog.Default().Debug("Executing cardano-cli command", "args", args)
 
 	cmd := exec.Command("cardano-cli", args...)
 	cmd.Stdout = nil
