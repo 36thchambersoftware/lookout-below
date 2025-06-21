@@ -12,6 +12,12 @@ func BuildTransaction(walletAddr string, holders []db.Holder, adaPerNFT int64) e
 	txOuts := []string{}
 	for _, h := range holders {
 		total := adaPerNFT * h.Count
+		slog.Default().Debug("Calculating transaction output",
+			"holder_address", h.Address,
+			"nft_count", h.Count,
+			"ada_per_nft", adaPerNFT,
+			"total_ada", total,
+		)
 		txOuts = append(txOuts, fmt.Sprintf("--tx-out %s+%d", h.Address, total))
 	}
 
