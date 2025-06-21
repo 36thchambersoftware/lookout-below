@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"log/slog"
 	"os"
 	"strconv"
 
@@ -51,6 +52,11 @@ func main() {
 
 	totalNeeded := 0.0
 	adaPerNFT, _ := strconv.ParseFloat(config.GetEnv("AIR_DROP_AMOUNT"), 64)
+	slog.Default().Info("Airdrop configuration",
+		"wallet_address", walletAddr,
+		"ada_per_nft", adaPerNFT,
+		"holders_count", len(holders),
+	)
 	for _, h := range holders {
 		totalNeeded += float64(h.Count) * adaPerNFT
 	}
