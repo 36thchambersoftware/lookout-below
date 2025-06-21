@@ -51,7 +51,11 @@ func main() {
 	walletAddr := string(addrBytes)
 
 	var totalNeeded int64
-	adaPerNFT, _ := strconv.ParseInt(config.GetEnv("AIR_DROP_AMOUNT"), 10, 64)
+	adaPerNFT, err := strconv.ParseInt(config.GetEnv("AIR_DROP_AMOUNT"), 10, 64)
+	if err != nil {
+		log.Fatalf("Invalid AIR_DROP_AMOUNT: %v", err)
+	}
+
 	slog.Default().Info("Airdrop configuration",
 		"wallet_address", walletAddr,
 		"ada_per_nft", adaPerNFT,
