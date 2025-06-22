@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log/slog"
 	"os/exec"
-	"strconv"
 )
 
 type AssetAmount struct {
@@ -14,9 +13,8 @@ type AssetAmount struct {
 }
 
 type UTxO struct {
-	TxHash   string         `json:"tx_hash"`
-	TxIndex  int            `json:"tx_index"`
-	Amount   []AssetAmount  `json:"amount"`
+	Address string         `json:"address"`
+	Value   map[string]int `json:"value"` // keys like "lovelace"
 }
 
 func CheckFunds(walletAddr string, requiredLovelace int64) error {
@@ -33,28 +31,21 @@ func CheckFunds(walletAddr string, requiredLovelace int64) error {
 		return fmt.Errorf("failed to run cardano-cli query utxo: %w", err)
 	}
 
-	// Parse the JSON into a map of tx_in => UTxO
 	var utxos map[string]UTxO
 	if err := json.Unmarshal(output, &utxos); err != nil {
-		return fmt.Errorf("failed to parse UTXO JSON: %w", err)
+		return fmt.Errorf("failed to decode utxo JSON: %w", err)
 	}
 
-	var totalLovelace int64
+	var totalLovelace int
 	for _, utxo := range utxos {
-		for _, amt := range utxo.Amount {
-			if amt.Unit == "lovelace" {
-				q, err := strconv.ParseInt(amt.Quantity, 10, 64)
-				if err != nil {
-					return fmt.Errorf("invalid lovelace quantity: %w", err)
-				}
-				totalLovelace += q
-			}
+		if lovelace, ok := utxo.Value["lovelace"]; ok {
+			totalLovelace += lovelace
 		}
 	}
 
 	slog.Default().Info("Wallet balance", "address", walletAddr, "total_lovelace", totalLovelace)
 
-	if totalLovelace < requiredLovelace {
+	if int64(totalLovelace) < requiredLovelace {
 		return fmt.Errorf("insufficient funds: required %d lovelace, found %d", requiredLovelace, totalLovelace)
 	}
 	return nil
