@@ -65,7 +65,7 @@ func main() {
 		totalNeeded += h.Quantity * adaPerNFT
 	}
 
-	if err := wallet.CheckFunds(walletAddr, int64(totalNeeded*1e6)); err != nil {
+	if err := wallet.CheckFunds(walletAddr, totalNeeded); err != nil {
 		log.Fatalf("Funding error: %v", err)
 	}
 
