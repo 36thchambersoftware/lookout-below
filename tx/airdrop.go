@@ -25,7 +25,7 @@ func BuildTransaction(walletAddr string, holders []db.Holder, adaPerNFT int64) e
 			"ada_per_nft", adaPerNFT,
 			"total_ada", total,
 		)
-		txOuts = append(txOuts, fmt.Sprintf("--tx-out %s+%d", h.Address, total))
+		txOuts = append(txOuts, "--tx-out", fmt.Sprintf("%s+%d", h.Address, total))
 	}
 
 	// 1. Query UTXOs in JSON format
@@ -49,9 +49,9 @@ func BuildTransaction(walletAddr string, holders []db.Holder, adaPerNFT int64) e
 
 	// 3. Construct --tx-in arguments
 	txIns := []string{}
-	for key := range utxos {
+	for utxo := range utxos {
 		// key is like "txhash#txix"
-		txIns = append(txIns, fmt.Sprintf("--tx-in=%s", key))
+		txIns = append(txIns, "--tx-in", utxo)
 	}
 	if len(txIns) == 0 {
 		return fmt.Errorf("no UTXOs found at address %s", walletAddr)
