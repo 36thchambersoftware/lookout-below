@@ -43,10 +43,10 @@ func main() {
 		log.Fatal("No holders found in the provided file")
 	}
 
-	walletAddrFile, err := wallet.CreateWallet()
-	if err != nil {
-		log.Fatalf("Wallet creation failed: %v", err)
-	}
+	walletAddrFile := "airdrop-walletf7ce2d7e-f28f-47d9-a5b3-058af289862f.addr" // walletAddrFile, err := wallet.CreateWallet()
+	// if err != nil {
+	// 	log.Fatalf("Wallet creation failed: %v", err)
+	// }
 	addrBytes, _ := os.ReadFile(walletAddrFile)
 	walletAddr := string(addrBytes)
 
