@@ -11,9 +11,38 @@ import (
 )
 
 type UTxOMap map[string]struct {
-		TxHash string `json:"tx_hash"`
-		TxIx   int    `json:"tx_index"`
-	}
+	TxHash string `json:"tx_hash"`
+	TxIx   int    `json:"tx_index"`
+}
+
+// Send total balance to another wallet.
+// cardano-cli conway transaction build-raw \
+//   --tx-in c3195ffa0fcc3fc70a681f64bbdfbc52e0eff3f70cbd767714675d088d7b1a14#63 \
+//   --tx-out addr1q8ur464mlqsqslh0dn9dqg88zn0q0sqag2hkxc0vhtrn5c7wkhumlr876ehcm8ltdwt7s49mwxfw47c4hcf5p6qdlavqaawfcs+0 \
+//   --fee 0 \
+//   --out-file tx.raw
+
+//   cardano-cli conway transaction calculate-min-fee \
+//   --tx-body-file tx.raw \
+//   --tx-in-count 1 \
+//   --tx-out-count 1 \
+//   --witness-count 1 \
+//   --mainnet \
+//   --protocol-params-file /home/cardano/cardano/pparams.json
+
+// cardano-cli conway transaction build-raw \
+//   --tx-in c3195ffa0fcc3fc70a681f64bbdfbc52e0eff3f70cbd767714675d088d7b1a14#63 \
+//   --tx-out addr1q8ur464mlqsqslh0dn9dqg88zn0q0sqag2hkxc0vhtrn5c7wkhumlr876ehcm8ltdwt7s49mwxfw47c4hcf5p6qdlavqaawfcs+1475662 \
+//   --fee 165281 \
+//   --out-file tx.raw
+
+// cardano-cli conway transaction sign \
+//   --tx-body-file tx.raw \
+//   --signing-key-file airdrop-walletdd9e0b14-d69f-4dab-9ac4-db5cb18301e5.skey \
+//   --mainnet \
+//   --out-file tx.signed
+
+// cardano-cli conway transaction submit --tx-file tx.signed --mainnet
 
 func BuildTransaction(walletAddr string, holders []db.Holder, adaPerNFT int64) error {
 	txOuts := []string{}
